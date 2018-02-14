@@ -1,0 +1,27 @@
+#!/usr/bin/gnuplot
+reset
+set terminal png
+set term png size 800,600 #800 pixels by 600 pixels
+
+set datafile separator " "
+set xdata time
+set timefmt "%Y-%m-%d %H"
+#set xrange [time(0):time(0) + 3*24*60*60]
+set format x "%d/%m\n%Y\nh%H"
+set xlabel "Time"
+set xtics font ", 10"
+
+set ytics 5
+set yrange [-10:50]
+set ylabel '°C'
+
+set title "Weather Forecast by Metcheck and Remo Tomasi"
+set key lmargin
+set key font ",10"
+set grid
+set size 1, 1 # ratio 1:1
+
+set style data lines
+
+plot "DATAS/weatherForecast.csv" using 1:3 title "Temp", \
+"" using 1:4 title "DewP"
