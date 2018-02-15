@@ -51,18 +51,28 @@ awk 'BEGIN{FS=OFS=" "}{print $1,$2,$3,$4,$5,$6,$7,int($8*1.609),$9,$10,$11,$12,$
 sed -i 's/n 0 W/n WindS W/g' DATAS/tmp.csv                                          # column from 0 to WindS
 cat DATAS/tmp.csv > DATAS/weatherForecast.csv
 
-# creation of a human readable png image
-cut -d' ' -f1,2,3,5,6,7,16,8,9 DATAS/weatherForecast.csv > DATAS/weatherForecastLight.csv
+# select the only important infos
+cut -d' ' -f1,2,3,5,6,7,8,9,11,16 DATAS/weatherForecast.csv > DATAS/weatherForecastLight.csv
+
+# manage columns
+awk '{ print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10}' DATAS/weatherForecastLight.csv > HTMLS/p.txt
 # take only infos in particular moment of the day: h00-h06-h12-h18
 cat DATAS/weatherForecastLight.csv | grep '^...........00\|^...........06\|^...........12\|^...........18' > HTMLS/p.txt
 
+# add the columns
+paste -d'\n' HTMLS/columns.txt HTMLS/p.txt > HTMLS/p2.txt
+
+# sorting columns
+awk '{ print $1,$2,$3,$4,$5,$6,$10,$7,$8,$9}' HTMLS/p2.txt > HTMLS/p.txt
+
+# convert in various formats
 ./conv2htm.sh HTMLS/p.txt > HTMLS/p.html
 ./conv2htm.sh DATAS/weatherForecastLight.csv > HTMLS/weatherForecastLight.html
 sed -i 's/nowrap >/nowrap ><h2>/g' HTMLS/weatherForecastLight.html
 sed -i 's/td>/td><\/h2>/g' HTMLS/weatherForecastLight.html
 
 echo "Data file downloaded and formatted..."
-./conv2htm.sh DATAS/weatherForecast.csv > HTMLS/weatherForecast.html                # csv to html conversion
+./conv2htm.sh DATAS/weatherForecast.csv > HTMLS/weatherForecast.html           # csv to html conversion
 xvfb-run --server-args="-screen 0, 1024x768x24" cutycapt --url=file://$PWD/HTMLS/weatherForecast.html --out=IMAGES/weatherForecastData.png
 ./graph.pg > IMAGES/weatherForecastGraph.png                                   # creating graph by gnuplot
 ./cloud.pg > IMAGES/weatherForecastCloud.png                                   # graph for clouds
