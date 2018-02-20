@@ -69,6 +69,8 @@ cat DATAS/wfl_tmp2.csv > DATAS/weatherForecastLight.csv
 # convert in various formats
 #./conv2htm.sh HTMLS/p.txt > HTMLS/p.html
 ./conv2htm.sh DATAS/weatherForecastLight.csv > HTMLS/weatherForecastLight.html
+l = 0
+sed -i 's/nowrap/id=1/g' HTMLS/weatherForecastLight.html
 #sed -i 's/nowrap >/nowrap ><h3>/g' HTMLS/weatherForecastLight.html
 #sed -i 's/td>/td><\/h2>/g' HTMLS/weatherForecastLight.html
 
