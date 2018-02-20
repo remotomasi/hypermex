@@ -1,0 +1,1 @@
+Data Orario Temperatura Umidita' Nuvolosita' Pioggia Probabilita' Vento Direzione Cielo
