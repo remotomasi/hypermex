@@ -69,8 +69,18 @@ cat DATAS/wfl_tmp2.csv > DATAS/weatherForecastLight.csv
 # convert in various formats
 #./conv2htm.sh HTMLS/p.txt > HTMLS/p.html
 ./conv2htm.sh DATAS/weatherForecastLight.csv > HTMLS/weatherForecastLight.html
-l = 0
-sed -i 's/nowrap/id=1/g' HTMLS/weatherForecastLight.html
+
+for l in {17..150..12}; do
+  n=$(sed -n $l'p' HTMLS/weatherForecastLight.html | cut -d'>' -f2 | cut -d'<' -f1)
+  t=$(sed -n $l'p' HTMLS/weatherForecastLight.html | cut -d'>' -f1 | cut -d'<' -f2) # | cut -d'>' -f2 | cut -d'<' -f1)
+  sed -i 's/'$t'/bgcolor=red/g' HTMLS/weatherForecastLight.html
+  if [ $n -gt 12 ]; then echo "ciao"; fi #| awk '{sub(/'$1'/,"gbcolor=red>")}1' #HTMLS/weatherForecastLight.html
+  #sed -n $l'p' HTMLS/weatherForecastLight.html | cut -d'>' -f2 | cut -d'<' -f1 | sed -i 's/nowrap/id=*1*/g'
+  #sed -n $l'p' HTMLS/weatherForecastLight.html | awk '{gsub(/17/,"18")}1'
+  #| sed -i 's/nowrap/id='$l'/g' HTMLS/weatherForecastLight.html
+done
+#sed -i 's/nowrap/id=*1*/g' HTMLS/weatherForecastLight.html
+#awk 'BEGIN{FS=OFS="*"}{print $2+$l}' HTMLS/weatherForecastLight.html > tmp2.txt
 #sed -i 's/nowrap >/nowrap ><h3>/g' HTMLS/weatherForecastLight.html
 #sed -i 's/td>/td><\/h2>/g' HTMLS/weatherForecastLight.html
 
